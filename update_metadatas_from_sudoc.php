@@ -1,11 +1,19 @@
 <?php
+    /*
+     * update_metadatas_from_sudoc.php
+     *
+     * Auteur : Sylvain Machefert, Bordeaux 3 (smachefert(x)bordeaux3(x)fr)
+     * But : mise à jour d'une base omeka à l'aide du sudoc
+     *
+     * 20130109 : première version en ligne
+     */
     require("utils.php");
     require("simple_html_dom.php");
 
     // Procédure qui va permettre de mettre à jour les items contenus dans la base omeka,
     // à partir des métadonnées exposées dans le sudoc
     
-    // On va récupérer le code du champ PPN
+    // On va récupérer le code du champ PPN (Remplacer 'PPN' par le nom du champ le cas échéant)
     $result = SQL("select id from elements where name like 'PPN'");
     $row = mysql_fetch_assoc($result);
     $id_ppn = $row["id"];

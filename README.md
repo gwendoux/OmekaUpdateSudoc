@@ -9,8 +9,18 @@ Attention, si la notice initiale omeka contient par exemple 3 auteurs et que la 
 
 Les champs spécifiques qui auraient pu être créés et qui ne sont pas mis à jour via cette moulinette ne seront pas écrasés.
 
-Informations pratiques
-======================
-Ce script a été développé dans le cadre de la mise en place du projet 1886 de l'université Bordeaux 3 (http://1886.u-bordeaux3.fr). Il est mis à disposition tel quel et sans aucune garantie de fonctionnement. 
+Utilisation
+===========
+- Modifier le fichier utils.php pour que les premières lignes correspondent à votre configuration de base
+- S'assurer que le champ contenant le PPN dans votre base s'appelle bien "PPN". Sinon, modifier le nom du champ à la ligne 17 du script update_metadatas_from_sudoc.php
+- Lancer la commande php update_metadatas_from_sudoc.php
+
+Avertissements
+==============
+Ce script a été développé dans le cadre de la mise en place du projet 1886 de l'université Bordeaux 3 (http://1886.u-bordeaux3.fr). Il est mis à disposition tel quel et sans aucune garantie de fonctionnement.
+
+Il fonctionnait en décembre 2012 mais est très lié à l'interface public du sudoc et pourrait ne plus être opérationnel en cas de changement effectué par l'ABES sur cette interface. 
+
+Dans tous les cas nous vous conseillons de faire tourner ce script sur une copie de votre base de données, il peut potentiellement vider certains champs. 
 
 En cas de question autour de ce script, veuillez contacter Sylvain Machefert : smachefert@u-bordeaux3.fr
