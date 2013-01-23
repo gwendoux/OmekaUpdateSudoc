@@ -1,26 +1,20 @@
 <?php
-    /*
-     * update_metadatas_from_sudoc.php
-     *
-     * Auteur : Sylvain Machefert, Bordeaux 3 (smachefert(x)bordeaux3(x)fr)
-     * But : mise à jour d'une base omeka à l'aide du sudoc
-     *
-     * 20130109 : première version en ligne
-     */
     require("utils.php");
     require("simple_html_dom.php");
 
     // Procédure qui va permettre de mettre à jour les items contenus dans la base omeka,
     // à partir des métadonnées exposées dans le sudoc
     
-    // On va récupérer le code du champ PPN (Remplacer 'PPN' par le nom du champ le cas échéant)
+    // On va récupérer le code du champ PPN
     $result = SQL("select id from elements where name like 'PPN'");
     $row = mysql_fetch_assoc($result);
     $id_ppn = $row["id"];
     
     // On va aller liste l'ensemble des PPN de la base
     $res_ppn = SQL("select record_id, text from element_texts where element_id=".$id_ppn." order by record_id");
-    
+   
+		// Ou un seul. Utiliser cette requête pour ne mettre à jour qu'une notice
+//		$res_ppn = SQL("select record_id, text from element_texts where text =  'PPN116388544'");
     while ($row_ppn = mysql_fetch_assoc($res_ppn))
     {
       $record_id = $row_ppn["record_id"];
@@ -147,6 +141,7 @@
     {
       // Cette fonction va aller mettre à jour s'il existe, ou insérer sinon
       // le champ DC concerné
+      // TODO : Voir comment gérer les champs multivalués
       global $record_id;
       
       // On va chercher l'identifiant du champ Creator
@@ -175,15 +170,17 @@
       foreach ($source as $uneSource)
       {
         // On va faire la mise à jour
+				$valeur = html_entity_decode($uneSource);
+				$valeur = addslashes($valeur);
         if ($id_update = array_shift($tab_existants))
         {
           print "Mise à jour de $id_update\n";
-          SQL("update element_texts set text='".addslashes($uneSource)."' where id = $id_update");
+          SQL("update element_texts set text='".$valeur."' where id = $id_update");
         }
         else
         {
           print "Insertion d'un élément\n";
-          $sql = "insert into element_texts (`record_id`, `record_type_id`, `element_id`, `text`) values ('$record_id', '2', '$element_id_dest', '".addslashes($uneSource)."')"; 
+          $sql = "insert into element_texts (`record_id`, `record_type_id`, `element_id`, `text`) values ('$record_id', '2', '$element_id_dest', '".$valeur."')"; 
           SQL($sql);
         }
       }
