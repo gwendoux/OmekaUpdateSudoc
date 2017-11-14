@@ -1,15 +1,15 @@
 <?php
-    $host = "#";
-    $db = "#";
-    $user = "#";
-    $pwd = "#";
-    $link = mysql_connect($host, $user, $pwd);
+    # load configuration from .env
+    $dotenv = new Dotenv\Dotenv(__DIR__);
+    $dotenv->load();
+    
+    $link = mysql_connect(getenv('host'), getenv('user'), getenv('pwd'));
 
     if (!$link)
     {
         die('Could not connect: ' . mysql_error());
     }
-    $db_selected = mysql_select_db($db, $link);
+    $db_selected = mysql_select_db(getenv('db'), $link);
     if (!$db_selected) {
         die('Can\'t use foo : ' . mysql_error());
     }
